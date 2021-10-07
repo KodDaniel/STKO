@@ -1,0 +1,7 @@
+﻿@model ApplicationUser
+    <div class="nav">
+        <a id="LoggedInLink" class="font-login mr-1"  href="#">Inloggad som <i>@Model.UserName</i> </a>
+        <div class="spaceLoginNavbar">
+            <a class="font-login mr-1" asp-page="/Account/Logout">Logga ut</a>
+        </div>
+    </div>

@@ -1,0 +1,25 @@
+﻿@model ExamViewModel
+
+@*<h5>Skriv JavaScript-funktioner som omvandlar ett card till ett form, och tvärtom.</h5>*@
+<div id="ExamId" hidden>@Model.ExamId</div>
+<h2 class="text-center" id="ExamNameHeadline">@Model.ExamName</h2>
+<br />
+<div class="card-header text-white bg-dark mb-3">
+    <ul class="nav nav-pills card-header-pills">
+        <li class="nav-item">
+            <a id="QuestionLink" class="nav-link text-white" href="#">Frågor</a>
+        </li>
+        <li id="SettingsLink" class="nav-item ">
+            <a class="nav-link text-white" href="#">Inställningar</a>
+        </li>
+    </ul>
+</div>
+<div id="Content">
+    <div id="Questions" class="d-none"></div>
+    <div id="Settings" class="d-none">
+        <div></div>
+        <h3>Uppdatera prov</h3>
+        <partial name="_ExamForm" model="Model"/>
+    </div>
+</div>
+<script src="/scripts/js/displayExam.js"></script>

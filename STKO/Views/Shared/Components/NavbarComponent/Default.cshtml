@@ -1,0 +1,28 @@
+﻿@model NavbarViewModel
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark ">
+        <a class="navbar-brand" href="#">@Model.NavbarTitle</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExamTimeDisplayListxampleDefault"
+                aria-controls="navbarsExamTimeDisplayListxampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                @foreach ((string dropdownTitle, List<NavigationLinkViewModel> dropdownlink) in Model.NavbarContent)
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href=# data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @dropdownTitle
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown01">
+                            @foreach (NavigationLinkViewModel link in  dropdownlink)
+                            {
+                                <a class="dropdown-item" href="@link.Link">@link.HeadLine</a>
+                            }
+                        </div>
+                    </li>
+                }
+            </ul>
+            <vc:login-component/>
+        </div>
+    </nav>

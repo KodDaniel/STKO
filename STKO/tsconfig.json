@@ -1,0 +1,28 @@
+{
+
+  // https://www.typescriptlang.org/tsconfig
+  "compileOnSave": false,
+  "compilerOptions": {
+    "noEmit": true,  
+    "sourceMap": true,
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "suppressExcessPropertyErrors": true,
+    "removeComments": false,
+    // https://stackoverflow.com/questions/42093758/need-clarification-of-the-target-and-lib-compiler-options
+    "target": "ESNext",
+    "lib": [ "ESNext", "Dom", "DOM.Iterable", "ES2015.Iterable", "ESNext.AsyncIterable" ],
+    //"module": "CommonJS"
+    "declaration": false
+    //"declarationDir": "/scripts/ts/declarations"
+    //"allowJs": true
+    //"strictPropertyInitialization": true, 
+    //"noUncheckedIndexedAccess": true,
+    //"checkJs": true 
+  }
+  //"exclude": [
+  //  "node_modules",
+  //  "wwwroot"
+  //]
+} 

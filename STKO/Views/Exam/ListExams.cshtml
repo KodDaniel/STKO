@@ -1,0 +1,37 @@
+﻿@model ExamViewModel
+
+@{ ViewBag.Title = "List";}
+
+<div id="Content" hidden>
+    @* Se klassen DisplayUsernameTaghelper *@
+    <h2 class="text-center">Prov för <i><displayUsername></displayUsername></i></h2><br/>
+    <div id="Headline"></div>
+    <table class="table text-nowrap" id="ExamTable">
+        <thead class="thead-dark" >
+        <tr>
+            <th id="ExamName">
+                <label asp-for="ExamName"></label> <a class="fa fa-sort text-white"></a>
+            </th>
+            <th id="CreateDate">
+                <label asp-for="CreateDate"></label> <a id="SortByCreateDateLink" class="fa fa-sort text-white"></a>
+            </th>
+            <th id="ChangeDate"> 
+                <label asp-for="ChangeDate"></label> <a class="fa fa-sort text-white"></a>
+            </th>
+            <th id="ExamTime">
+                <label asp-for="ExamTime"></label> <a class="fa fa-sort text-white"></a>
+            </th>
+            <th id="RandomOrder">
+                <label asp-for="RandomOrder"></label> <a class="fa fa-sort text-white"></a>
+            </th>
+            <th id="SendReminderDate">
+                <label asp-for="SendReminderDate"></label> <a class="fa fa-sort text-white"></a>
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody id="Examtbody">
+        </tbody>
+    </table>
+</div>
+<script src="/scripts/js/listExams.js"></script>

@@ -1,0 +1,104 @@
+﻿@page "{id}"
+@model EditorModel
+
+<h3 class="bg-dark text-white text-center p-2">Hantera roll: <i>@Model.Role.Name</i></h3>
+
+<form method="post">
+    <input type="hidden" name="rolename" value="@Model.Role.Name"/>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <h5 class="bg-dark text-white p-2">Användare som tillhör rollen <i>@Model.Role.Name</i></h5>
+    <table class="table table-sm table-striped table-bordered">
+        <thead><tr><th>Användare</th><th>Email</th><th></th></tr></thead>
+        <tbody>
+        @if (!(await Model.Members()).Any())
+        {
+            <tr><td colspan="3" class="text-center">Rollen har inga användare</td></tr>
+        }
+        @foreach (ApplicationUser user in await Model.Members())
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>
+                    <button asp-route-userid="@user.Id" class="btn btn-danger btn-sm" type="submit">Ta bort</button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <h5 class="bg-dark text-white p-2">Användare som inte tillhör rollen <i>@Model.Role.Name</i></h5>
+    <table class="table table-sm table-striped table-bordered">
+        <thead><tr><th>Användare</th><th>Email</th><th></th></tr></thead> 
+        <tbody>
+            @if (!(await Model.NonMembers()).Any()) 
+            {
+                <tr><td colspan="3" class="text-center">Inga användare finns att visa</td></tr>
+            }
+            @foreach (ApplicationUser user in await Model.NonMembers())
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>
+                        <button asp-route-userid="@user.Id" class="btn btn-primary btn-sm" type="submit">Lägg till</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+
+<a class="btn btn-secondary" asp-page="List">Tillbaka</a>
+
+@functions {
+    /// <summary>
+    /// Holds the logic to edit a role
+    /// </summary>
+    public class EditorModel : AdminPageModel
+    {
+        private readonly UserManager<ApplicationUser> UserManager;
+        private readonly RoleManager<IdentityRole> RoleManager;
+
+        public EditorModel(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            UserManager = userManager;
+            RoleManager = roleManager;
+        }
+
+        public IdentityRole Role { get; set;}
+
+        //Hämta alla användare som tillhör denna roll
+        public Task<IList<ApplicationUser>> Members() => UserManager.GetUsersInRoleAsync(Role.Name);
+
+        //Hämta alla användare i applikationen som INTE tillhör denna roll
+        public async Task<IEnumerable<ApplicationUser>> NonMembers() => UserManager.Users.ToList().Except(await Members());
+
+        public async Task OnGetAsync(string id) => Role = await RoleManager.FindByIdAsync(id);
+
+        public async Task<IActionResult> OnPostAsync(string userid, string rolename)
+        {
+            //Hämta roll och användare
+            Role = await RoleManager.FindByNameAsync(rolename);
+            ApplicationUser user = await UserManager.FindByIdAsync(userid);
+
+            //Om användare tillhör den aktuella rollen, ta bort användaren från rollen
+            //Om användaren inte tillhör den aktuella rollen, lägg till användaren till rollen
+           IdentityResult result = await UserManager.IsInRoleAsync(user, rolename) ? 
+               await UserManager.RemoveFromRoleAsync(user, rolename) : await UserManager.AddToRoleAsync(user, rolename);
+            
+            if (result.Succeeded)
+            {
+                return RedirectToPage();
+            }
+            foreach (IdentityError err in result.Errors)
+            {
+                ModelState.AddModelError("", err.Description);
+            }
+            return Page();
+        }
+
+     
+    }
+}
+

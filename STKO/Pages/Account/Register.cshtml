@@ -1,0 +1,92 @@
+﻿@page
+@using Microsoft.Extensions.Logging
+@model RegisterModel
+
+<h4>Registrera dig</h4>
+<div asp-validation-summary="All" class="text-danger"></div>
+<form method="post">
+    <div class="form-group">
+        <label asp-for="UserName"></label>
+        <div><span asp-validation-for="UserName" class="text-danger"></span></div>
+        <input asp-for="UserName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <div><span asp-validation-for="Email" class="text-danger"></span></div>
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <div><span asp-validation-for="Password" class="text-danger"></span></div>
+        <input asp-for="Password" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ConfirmPassword"></label>
+        <div><span asp-validation-for="ConfirmPassword" class="text-danger"></span></div>
+        <input asp-for="ConfirmPassword" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary text-center">Registrera</button>
+</form>
+
+@* Notera användningen av Sections för att se till att placera Valideringsscripten längst ner i bodyn (se referens i layoutfil) *@
+@section ValidationScripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+@functions
+{
+    /// <summary>
+    /// Holds the logic for the register page
+    /// </summary>
+    [BindProperties]
+
+    public class RegisterModel : PageModel
+    {
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public RegisterModel(UserManager<ApplicationUser> userManager) => _userManager = userManager;
+
+        [Required(ErrorMessage = "Du måste ange ett användarnamn")]
+        [Display(Name = "Användarnamn", Prompt = "Användarnamn")]
+        public string UserName { get; set; }
+
+        [Required(ErrorMessage = "Du måste ange ett lösenord")]
+        [Display(Name = "Lösenord", Prompt = "Lösenord")]
+        [UIHint("Password")]
+        public string Password { get; set; }
+
+        [Required(ErrorMessage = "Du måste ange en Epost-adress")]
+        [Display(Name = "Epost-adress", Prompt = "Epost-adress")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "Du måste bekräfta lösenordet")]
+        [Display(Name = "Bekräfta lösenord", Prompt = "Bekräfta lösenord")]
+        [Compare(nameof(Password), ErrorMessage = "Lösenorden stämmer inte överens.")]
+        [UIHint("Password")]
+        public string ConfirmPassword { get; set; }
+
+        /// <summary>
+        /// Holds logic for registration
+        /// </summary> 
+        public async Task<IActionResult> OnPostAsync(/*[FromServices] ILogger<RegisterModel> _logger*/)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = UserName, Email = Email };
+
+                IdentityResult result = await _userManager.CreateAsync(user, Password);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToPage("Login");
+                }
+
+                foreach (IdentityError err in result.Errors)
+                {
+                    ModelState.AddModelError("", err.Description);
+                }
+            }
+
+            return Page();
+        }
+    }
+}

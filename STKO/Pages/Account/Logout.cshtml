@@ -1,0 +1,22 @@
+﻿@page
+@model LogoutModel
+
+@functions 
+{
+    /// <summary>
+    /// Holds the logic for the logout page
+    /// </summary> 
+    public class LogoutModel : PageModel 
+    {
+        private readonly SignInManager<ApplicationUser> signInManager;
+
+        public LogoutModel(SignInManager<ApplicationUser> signInMgr) => signInManager = signInMgr;
+
+        public async Task<IActionResult> OnGetAsync()
+        {
+            await signInManager.SignOutAsync();
+            //Återvänd till startsida
+            return LocalRedirect("/");
+        }
+    }
+}

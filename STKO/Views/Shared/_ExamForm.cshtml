@@ -1,0 +1,28 @@
+﻿@model ExamViewModel
+@* Notera att att formuläret är en taghelper *@
+<examform>
+    <div class="form-group">
+        <label asp-for="ExamName"></label>
+        <input asp-for="ExamName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ExamTime"></label>
+        <select  class="form-control" asp-for="ExamTime">
+            <option disabled selected value="">Välj en provtid</option>
+            @foreach ((_, string stringTime) in ExamViewModelFactory.ExamTimeDisplayList)
+            {
+                <option value=@stringTime>@stringTime</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="RandomOrder"></label> <input asp-for="RandomOrder" type="checkbox" />
+    </div>
+    <div></div>
+    <div class="form-group">
+        <label asp-for="SendReminderDate"></label>
+        <input asp-for="SendReminderDate" class="form-control " />
+    </div>
+</examform>
+
+<script src="/scripts/js/createOrUpdateExam.js"></script>

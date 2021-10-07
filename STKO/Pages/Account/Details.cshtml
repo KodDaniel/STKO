@@ -1,0 +1,42 @@
+﻿@page
+@model DetailsModel
+
+<table class="table table-sm table-bordered">
+    <tbody>
+            @if (Model.ApplicationUser == null) 
+            {
+                <tr><th class="text-center">Ingen användare finns att visa</th></tr>
+            } 
+            else 
+            {
+                <tr><th>Namn</th><td>@Model.ApplicationUser.UserName</td></tr>
+                <tr><th>Email</th><td>@Model.ApplicationUser.Email</td></tr>
+            }
+    </tbody>    
+</table>
+
+@functions {
+    /// <summary>
+    /// Renders the user details for the current user
+    /// </summary>
+
+    public class DetailsModel : PageModel
+    {
+        private readonly UserManager<ApplicationUser> userManager;
+
+        public DetailsModel(UserManager<ApplicationUser> manager) => userManager = manager;
+
+        public ApplicationUser ApplicationUser { get; set; }
+
+        /// <summary>
+        /// Displays the details of the current user
+        /// </summary>
+        public async Task OnGetAsync()
+        {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                ApplicationUser = await userManager.FindByNameAsync(User.Identity.Name);
+            }
+        }
+    }
+}

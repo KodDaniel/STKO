@@ -1,0 +1,95 @@
+﻿@page "{id}"
+@model EditorModel
+
+<h5 class="bg-dark text-white text-center p-2">Hantera användare</h5>
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label>ID</label>
+        <input asp-for="Id" class="form-control" disabled />
+        <input asp-for="Id" hidden />
+    </div>
+    <div class="form-group">
+        <label asp-for="UserName"></label>
+        <div><span asp-validation-for="UserName" class="text-danger"></span></div>
+        <input asp-for="UserName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <div><span asp-validation-for="Email" class="text-danger"></span></div>
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <div><span asp-validation-for="Password" class="text-danger"></span></div>
+        <input asp-for="Password" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Spara</button>
+    <a class="btn btn-secondary" asp-page="List">Tillbaka</a>
+</form>
+
+@section ValidationScripts{<partial name="_ValidationScriptsPartial"/>}
+
+@functions {
+    /// <summary>
+    /// Holds the logic to edit a user
+    /// </summary>
+    [BindProperties]
+    public class EditorModel : AdminPageModel
+    {
+        private readonly UserManager<ApplicationUser> UserManager;
+
+        public EditorModel(UserManager<ApplicationUser> usrManager) => UserManager = usrManager;
+
+        [Required]
+        public string Id { get; set; }
+
+        [Required(ErrorMessage = "Du måste ange ett användarnamn")]
+        [Display(Name = "Användarnamn", Prompt = "Användarnamn")]
+        public string UserName { get; set; }
+
+        [Required(ErrorMessage = ("Du måste ange en Epost-adress"))]
+        [EmailAddress(ErrorMessage = "Epost-adressen har ett felaktigt format")]
+        [Display(Name = "Epost-adress",Prompt = "Epost-adress")]
+        public string Email { get; set; }
+
+        [Display(Name = "Nytt lösenord", Prompt = "Nytt lösenord")]
+        [UIHint("Password")]
+        public string Password { get; set; }
+
+        public async Task OnGetAsync(string id)
+        {
+            ApplicationUser user = await UserManager.FindByIdAsync(id);
+            Id = user.Id;
+            UserName = user.UserName;
+            Email = user.Email;
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = await UserManager.FindByIdAsync(Id);
+
+                user.UserName = UserName; user.Email = Email;
+
+                IdentityResult result = await UserManager.UpdateAsync(user);
+
+                if (result.Succeeded && !string.IsNullOrEmpty(Password))
+                {
+                    await UserManager.RemovePasswordAsync(user);
+                    result = await UserManager.AddPasswordAsync(user, Password);
+                }
+                if (result.Succeeded)
+                {
+                    return RedirectToPage("List");
+                }
+                foreach (IdentityError err in result.Errors)
+                {
+                    ModelState.AddModelError("", err.Description);
+                }
+            }
+            return Page();
+        }
+    }
+}

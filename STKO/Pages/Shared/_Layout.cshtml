@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(ViewBag.Title ?? "Studiekollen") </title>
+    <link rel="shortcut icon" href="#">
+    <link asp-href-include="/lib/bootstrap/css/*.min.css" asp-href-exclude="**/*-reboot*,**/*-grid*" rel="stylesheet" />
+    <link asp-href-include="/css/site.css" rel="stylesheet" />
+</head>
+<body>
+    <vc:navbar-component />
+    <div class="container">
+        <main role="main" class="pb-3">
+            @*<h2 class="text-center bg-warning">Razor Pages Layout</h2><br />*@
+            @RenderBody()
+        </main>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            asp-fallback-src="/scripts/jquery.min.js" asp-append-version="true"
+            asp-fallback-test="window.jQuery">
+    </script>
+    @* Fixa cdnjs *@
+    <script asp-src-include="/lib/bootstrap/js/*.min.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("ValidationScripts", false)
+</body>
+</html>

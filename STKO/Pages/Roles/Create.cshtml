@@ -1,0 +1,55 @@
+﻿@page
+@model CreateModel
+
+<h5 class="bg-dark text-white text-center p-2">Skapa ny roll</h5>
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <div><span asp-validation-for="Name" class="text-danger"></span></div>
+        <input asp-for="Name" class="form-control"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Spara</button>
+    <a class="btn btn-secondary" asp-page="List">Tillbaka</a>
+</form>
+
+@section ValidationScripts{<partial name="_ValidationScriptsPartial" />} 
+
+@functions {
+
+    /// <summary>
+    /// Holds the logic to create a new role
+    /// </summary>
+    public class CreateModel : AdminPageModel
+    {
+        private readonly RoleManager<IdentityRole> RoleManager;
+
+        public CreateModel(RoleManager<IdentityRole> roleManager) => RoleManager = roleManager;
+
+        [BindProperty]
+        [Required(ErrorMessage = "Rollen måste ha ett namn")]
+        [Display(Name = "Rollnamn", Prompt = "Rollnamn")]
+        public string Name { get; set; }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (ModelState.IsValid)
+            {
+                IdentityRole role = new() {Name = Name};
+
+                IdentityResult result = await RoleManager.CreateAsync(role);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToPage("List");
+                }
+
+                foreach (IdentityError err in result.Errors)
+                {
+                    ModelState.AddModelError("", err.Description);
+                }
+            }
+            return Page();
+        }
+    }
+}

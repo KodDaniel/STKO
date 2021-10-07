@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STKO", "STKO\STKO.csproj", "{C25D571F-B378-4A51-9405-6B3C9C941BAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C25D571F-B378-4A51-9405-6B3C9C941BAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C25D571F-B378-4A51-9405-6B3C9C941BAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C25D571F-B378-4A51-9405-6B3C9C941BAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C25D571F-B378-4A51-9405-6B3C9C941BAC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {18BC1AF2-7B78-4ED4-AA92-5F74DB83A860}
+	EndGlobalSection
+EndGlobal
