@@ -103,7 +103,7 @@ namespace STKO
                 endpoints.MapFallback(async context =>
                 {
                     context.Response.Redirect("/urlNotFound.html");  
-                     await Task.CompletedTask;
+                    await Task.CompletedTask;
                 });
                 //endpoints.MapFallback(DetermineFallbackRoute.Endpoint);
             });

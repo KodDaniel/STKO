@@ -16,12 +16,10 @@ namespace STKO.Controllers
     {
         //private readonly ILogger<ExamController> _logger;
         private readonly IExamRepository _examRepo;
-         
-        public ExamController(/*ILogger<ExamController> logger,*/ IExamRepository examRepo)
-        {
+
+        public ExamController(/*ILogger<ExamController> logger,*/ IExamRepository examRepo) =>
             //_logger = logger;
             _examRepo = examRepo;
-        }
 
         /// <summary>
         /// This method renders the initial view for "ListExams"
