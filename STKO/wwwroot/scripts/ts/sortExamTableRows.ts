@@ -7,7 +7,7 @@ import SortTableRows from "./sortTableRows";
 */
 export class SortExamTableRows extends SortTableRows
 {
-    constructor(tupleToSort: [string, HTMLTableRowElement][], columnToSort: ExamColumnNames, sortOrder: SortOrder)
+    constructor(tupleToSort: [string, HTMLTableRowElement][], columnToSort: ExamColumnNames, sortOrder: SortOrder) 
     {
         
         switch (columnToSort)

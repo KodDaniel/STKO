@@ -26,11 +26,16 @@ namespace STKO.Models.Database
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            //Notera att vi vi använder User Secrets. LÄS mer i avsnittet "Reading User Secrets "
-            string username = configuration["Admin:Username"];
-            string email = configuration["Admin:Email"];
-            string password = configuration["Admin:Password"];
-            string role = configuration["Admin:Role"]; 
+            ////Notera att vi vi använder User Secrets. LÄS mer i avsnittet "Reading User Secrets "
+            //string username = configuration["Admin:Username"];
+            //string email = configuration["Admin:Email"];
+            //string password = configuration["Admin:Password"];
+            //string role = configuration["Admin:Role"]; 
+
+            const string username = "Admin";
+            const string email = "Admin@example.com";
+            const string password = "Secret123$";
+            const string role = "Admin";
 
             if (await userManager.FindByNameAsync(username) == null)
             {
